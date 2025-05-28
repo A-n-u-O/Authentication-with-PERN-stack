@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
 
     if (user.rowCount !== 0) {
       //if the user exists
-      return res.status(401).send("user already exists"); //the person is unauthenticated, 403- unauthorized
+      return res.status(401).json("user already exists"); //the person is unauthenticated, 403- unauthorized
     }
 
     //3. else bcrypt the user password
@@ -39,6 +39,46 @@ router.post("/register", async (req, res) => {
 
     //5. Generating our jwt token
     const token = jwtGenerator(newUser.rows[0].user_id);
+    res.json(token);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+});
+
+//login route
+
+router.post("/login", async (req, res) => {
+  try {
+    //a lot more bcrypt
+
+    // 1. destructure the request.body(req)
+    const { email, password } = req.body;
+
+    // 2. check if user does exist(if not, throw error)
+    const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
+      email,
+    ]);
+
+    if (user.rowCount === 0) {
+      return res.status(401).json("password or email is incorrect!"); //unauthenticated
+    }
+
+    // 3. check if incoming password is the same as database password
+    const validPassword = await bcrypt.compare(
+      password,
+      user.rows[0].user_password
+    );
+
+    if (!validPassword) {
+      return res.status(401).json("password or email is incorrect");
+    }
+
+    console.log(validPassword);
+
+    // 4. if password is correct, give them the jwt token
+    const token = jwtGenerator(user.rows[0].user_id);
+
     res.json(token);
   } catch (error) {
     console.error(error.message);
