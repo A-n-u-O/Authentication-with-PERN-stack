@@ -3,7 +3,7 @@ const Pool = require('pg').Pool //what allows us to configure our connection
 
 const pool = new Pool({
     user: "postgres",
-    password: "postgres-Superusr",
+    password: "Postgres123",
     host: "localhost",
     port: 5432,
     database:"blogplatform"
