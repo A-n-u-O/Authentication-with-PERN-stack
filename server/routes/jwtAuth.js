@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { json } = require("express");
 const pool = require("../db");
 const bcrypt = require("bcrypt");
+const jwtGenerator = require("../utils/jwtGenerator");
 //registering
 router.post("/register", async (req, res) => {
   try {
@@ -26,17 +27,19 @@ router.post("/register", async (req, res) => {
     const salt = await bcrypt.genSalt(saltRounds); //salt - random data for each password to make it more secure
     //start encrypting
     const bcryptPassword = await bcrypt.hash(password, salt); //hashes the plain password with salt
-console.log("Hashed password:", bcryptPassword);
+    console.log("Hashed password:", bcryptPassword);
 
     //4. Enter the new user into the database
     const newUser = await pool.query(
       "INSERT INTO users (user_name, user_email, user_password) VALUES ($1, $2, $3) RETURNING *",
       [name, email, bcryptPassword]
     );
-    res.json(newUser.rows);
+    // res.json(newUser.rows);
     console.log("new user inserted", newUser.rows);
 
     //5. Generating our jwt token
+    const token = jwtGenerator(newUser.rows[0].user_id);
+    res.json(token);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server error");
