@@ -43,4 +43,25 @@ router.get("/", authorize, async (req, res) => {
   }
 });
 
+//to get a post by the user maybe by search
+router.get("/content/:id", authorize, async (req, res) => {
+  try {
+    const user_id = req.user;
+    const post_id = req.params.id;
+
+    const singlePost = await pool.query(
+      "SELECT * FROM posts WHERE post_id = $1 AND user_id = $2",
+      [post_id, user_id]
+    );
+
+    if (singlePost.rowCount === 0) {
+      return res.status(404).json({ error: "Post Not Found" });
+    }
+
+    res.json(singlePost.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "server error" });
+  }
+});
 module.exports = router;
