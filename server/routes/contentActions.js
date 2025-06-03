@@ -4,10 +4,10 @@ const pool = require("../db");
 const authorize = require("../middleware/authorize");
 
 //to create content on the blog
-router.post("/createContent",authorize, async (req, res) => {
+router.post("/createContent", authorize, async (req, res) => {
   try {
-    user_id = req.user;//current user id
-    const { title, description, body, user_id, dateAndTime } = req.body;
+    const user_id = req.user; //current user id
+    const { title, description, body, dateAndTime } = req.body;
     console.log("create content", req.body);
 
     //validating inputs
@@ -28,10 +28,15 @@ router.post("/createContent",authorize, async (req, res) => {
 });
 
 //to get all posts by the user
-router.get("/", async (req, res) => {
+router.get("/", authorize, async (req, res) => {
+  //authorize was add to protect the route since it returns posts only for the loggged in user
   try {
-    const allPosts = await pool.query("SELECT * FROM posts");
-    res.json(allPosts.rows);
+    const user_id = req.user;
+    const userPosts = await pool.query(
+      "SELECT * FROM posts wHERE user_id = $1",
+      [user_id]
+    );
+    res.json(userPosts.rows);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "server error" });
