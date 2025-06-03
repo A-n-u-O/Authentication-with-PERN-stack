@@ -1,4 +1,4 @@
-CREATE DATABASE blogPlatform
+CREATE DATABASE blogplatform
 
 --set extension
 CREATE TABLE users (
@@ -10,3 +10,12 @@ CREATE TABLE users (
 
 --insert fake users
 INSERT INTO users (user_name, user_email, user_password) VALUES('anu','anuvictor2005@gmail.com','anu_password123');
+
+CREATE TABLE posts(
+    post_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    post_title VARCHAR(255) NOT NULL,
+    post_description VARCHAR(255) NOT NULL,
+    post_body VARCHAR(1000) NOT NULL,
+    post_dateAndTime TIMESTAMP NOT NULL,
+    user_id uuid REFERENCES users(user_id)
+);
