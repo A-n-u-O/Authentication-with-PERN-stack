@@ -12,7 +12,7 @@ CREATE TABLE users (
 INSERT INTO users (user_name, user_email, user_password) VALUES('anu','anuvictor2005@gmail.com','anu_password123');
 
 CREATE TABLE posts(
-    post_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    post_id SERIAL PRIMARY KEY,
     post_title VARCHAR(255) NOT NULL,
     post_description VARCHAR(255) NOT NULL,
     post_body VARCHAR(1000) NOT NULL,

@@ -7,17 +7,17 @@ const authorize = require("../middleware/authorize");
 router.post("/createContent", authorize, async (req, res) => {
   try {
     const user_id = req.user; //current user id
-    const { title, description, body, dateAndTime } = req.body;
+    const { title, description, body } = req.body;
     console.log("create content", req.body);
 
     //validating inputs
-    if (!title || !description || !body || !dateAndTime) {
+    if (!title || !description || !body) {
       return res.status(400).json({ error: "fill all input fields" });
     }
 
     const newPost = await pool.query(
-      "INSERT INTO posts (post_title, post_description, post_body, post_dateAndTime, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [title, description, body, dateAndTime, user_id]
+      "INSERT INTO posts (post_title, post_description, post_body, user_id) VALUES ($1, $2, $3, $4) RETURNING *",
+      [title, description, body, user_id]
     );
 
     res.json(newPost.rows[0]);
