@@ -76,11 +76,26 @@ router.put("/content/edit", authorize, async (req, res) => {
     [title, description, body, id]
   );
 
-  res.json("post updated successfully")
+  res.json("post updated successfully");
   try {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Server Error" });
+  }
+});
+
+//delete a post
+router.delete("/content/:id", authorize, async (req, res) => {
+  const { id } = req.params.id;
+  const deletePost = await pool.query("DELETE FROM posts WHERE post_id = $1", [
+    id,
+  ]);
+
+  res.json("post deleted successfully");
+  try {
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "server error occured" });
   }
 });
 module.exports = router;
