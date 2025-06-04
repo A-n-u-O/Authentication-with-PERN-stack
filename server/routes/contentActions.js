@@ -64,4 +64,23 @@ router.get("/content/:id", authorize, async (req, res) => {
     res.status(500).json({ error: "server error" });
   }
 });
+
+//edit a post
+router.put("/content/edit", authorize, async (req, res) => {
+  const { id } = req.params.id;
+  const { title } = req.params.title;
+  const { description } = req.params.descriptions;
+  const { body } = req.params.body;
+  const editPost = await pool.query(
+    "UPDATE posts SET post_title = $1, post_description = $2, post_body = $3 WHERE post_id = $4",
+    [title, description, body, id]
+  );
+
+  res.json("post updated successfully")
+  try {
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
 module.exports = router;
