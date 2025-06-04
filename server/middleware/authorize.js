@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 function authorize(req, res, next) {
   const token = req.header("authorization");
-
+  console.log(token);
   if (!token) {
     return res.status(403).json({ error: " authorization denied" });
   }
@@ -14,7 +14,7 @@ function authorize(req, res, next) {
     next();
   } catch (error) {
     console.error(error.message);
-    req.status(401).json({ error: "Invalid token" });
+    res.status(401).json({ error: "Invalid token" });
   }
 }
 module.exports = authorize;
