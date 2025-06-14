@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 const validInfo = require("../middleware/validInfo");
 const authorization = require("../middleware/authorization");
+
+
 //registering
 router.post("/register", validInfo, async (req, res) => {
   try {
@@ -87,7 +89,7 @@ router.post("/login", validInfo, async (req, res) => {
   }
 });
 
-router.get("/is-verify", async (req, res) => {
+router.get("/is-verify",authorization, async (req, res) => {
   try {
     res.json(true);
   } catch (error) {
