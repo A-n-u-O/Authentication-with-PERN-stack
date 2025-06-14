@@ -4,7 +4,7 @@ const pool = require("../db");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
 const validInfo = require("../middleware/validInfo");
-
+const authorization = require("../middleware/authorization");
 //registering
 router.post("/register", validInfo, async (req, res) => {
   try {
@@ -87,5 +87,12 @@ router.post("/login", validInfo, async (req, res) => {
   }
 });
 
-//middleware to check validity of token before accessing private areas
+router.get("/is-verify", async (req, res) => {
+  try {
+    res.json(true);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+});
 module.exports = router;

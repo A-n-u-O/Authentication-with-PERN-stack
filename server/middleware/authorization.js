@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+//check if the token being sent is valid
 function authorization(req, res, next) {
   const token = req.header("authorization");
   console.log(token);
