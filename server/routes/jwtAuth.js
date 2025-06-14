@@ -3,8 +3,10 @@ const { json } = require("express");
 const pool = require("../db");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenerator");
+const validInfo = require("../middleware/validInfo");
+
 //registering
-router.post("/register", async (req, res) => {
+router.post("/register", validInfo, async (req, res) => {
   try {
     //1. destructure the req.body to get (name, email, password)
     const { name, email, password } = req.body;
@@ -47,7 +49,7 @@ router.post("/register", async (req, res) => {
 });
 
 //login route
-router.post("/login", async (req, res) => {
+router.post("/login", validInfo, async (req, res) => {
   try {
     //a lot more bcrypt
 
@@ -84,7 +86,6 @@ router.post("/login", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-
 
 //middleware to check validity of token before accessing private areas
 module.exports = router;

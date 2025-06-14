@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const { json } = require("express");
 const pool = require("../db");
-const authorize = require("../middleware/authorize");
+const authorization = require("../middleware/authorization");
 
 //to create content on the blog
-router.post("/createContent", authorize, async (req, res) => {
+router.post("/createContent", authorization, async (req, res) => {
   try {
     const user_id = req.user; //current user id
     const { title, description, body } = req.body;
@@ -28,7 +28,7 @@ router.post("/createContent", authorize, async (req, res) => {
 });
 
 //to get all posts by the user
-router.get("/", authorize, async (req, res) => {
+router.get("/", authorization, async (req, res) => {
   //authorize was add to protect the route since it returns posts only for the loggged in user
   try {
     const user_id = req.user;
@@ -44,7 +44,7 @@ router.get("/", authorize, async (req, res) => {
 });
 
 //to get a post by the user maybe by search
-router.get("/content/:id", authorize, async (req, res) => {
+router.get("/content/:id", authorization, async (req, res) => {
   try {
     const user_id = req.user;
     const post_id = req.params.id;
@@ -66,7 +66,7 @@ router.get("/content/:id", authorize, async (req, res) => {
 });
 
 //edit a post
-router.put("/content/edit", authorize, async (req, res) => {
+router.put("/content/edit", authorization, async (req, res) => {
   const { id } = req.params.id;
   const { title } = req.params.title;
   const { description } = req.params.descriptions;
@@ -85,7 +85,7 @@ router.put("/content/edit", authorize, async (req, res) => {
 });
 
 //delete a post
-router.delete("/content/:id", authorize, async (req, res) => {
+router.delete("/content/:id", authorization, async (req, res) => {
   const { id } = req.params.id;
   const deletePost = await pool.query("DELETE FROM posts WHERE post_id = $1", [
     id,
