@@ -13,6 +13,9 @@ import { useState } from "react";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const setAuth = (boolean) => {
+    setIsAuthenticated(boolean);
+  };
   return (
     <>
       <Router>
@@ -22,7 +25,11 @@ function App() {
             <Route
               path="/dashboard"
               element={
-                isAuthenticated ? <Dashboard /> : <Navigate to="/login" />
+                isAuthenticated ? (
+                  <Dashboard setAuth={setAuth} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
 
@@ -30,17 +37,13 @@ function App() {
               path="/login"
               element={
                 !isAuthenticated ? (
-                  <Login setIsAuthenticated={setIsAuthenticated} />
+                  <Login setAuth={setAuth} />
                 ) : (
                   <Navigate to="/dashboard" />
                 )
               }
             />
-            <Route
-              exact
-              path="/register"
-              element={<Register setIsAuthenticated={setIsAuthenticated} />}
-            />
+            <Route path="/register" element={<Register setAuth={setAuth} />} />
           </Routes>
         </div>
       </Router>
