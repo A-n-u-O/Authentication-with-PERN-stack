@@ -1,8 +1,8 @@
 const Login = ({setAuth}) => {
   return (
     <>
-      <h1>Login</h1>
-      <button className=" alert-dark w-25" onClick={()=>setAuth(true)}>log in</button>
+      <h1 className=" text-3xl font-bold">Login</h1>
+      <button className="" onClick={()=>setAuth(true)}>log in</button>
     </>
   );
 };
