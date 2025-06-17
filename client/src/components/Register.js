@@ -1,10 +1,11 @@
 import { useState } from "react";
 import eyeClosed from "../assets/icons/eye-closed.svg";
 import eyeOpen from "../assets/icons/eye-open.svg";
+import { Link } from "react-router-dom";
 
 const Register = ({ setAuth = () => console.log("fallback setAuth used") }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [inputs, setInputs] = useState({ name: "hi", email: "", password: "" });
+  const [inputs, setInputs] = useState({ name: "", email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -169,6 +170,10 @@ const Register = ({ setAuth = () => console.log("fallback setAuth used") }) => {
             </button>
           </div>
         </form>
+        <p className="back-to-login flex row-auto justify-center gap-3 mt-3 text-2xl">
+          <p>Already have an account?</p>
+          <Link to={"/login"} className=" text-blue-700">Log In</Link>
+        </p>
       </div>
     </>
   );

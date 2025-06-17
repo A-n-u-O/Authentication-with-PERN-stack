@@ -1,6 +1,7 @@
 import { useState } from "react";
 import eyeClosed from "../assets/icons/eye-closed.svg";
 import eyeOpen from "../assets/icons/eye-open.svg";
+import { Link } from "react-router-dom";
 const Login = ({ setAuth }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [inputs, setInputs] = useState({ email: "", password: "" });
@@ -148,6 +149,12 @@ const Login = ({ setAuth }) => {
             </button>
           </div>
         </form>
+        <p className="back-to-register flex row-auto justify-center gap-3 mt-3 text-2xl">
+          <p>Don't have an account?</p>
+          <Link to={"/register"} className=" text-blue-700">
+            Register
+          </Link>
+        </p>
       </div>
     </>
   );
