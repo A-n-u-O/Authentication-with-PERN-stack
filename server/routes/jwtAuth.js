@@ -6,7 +6,6 @@ const jwtGenerator = require("../utils/jwtGenerator");
 const validInfo = require("../middleware/validInfo");
 const authorization = require("../middleware/authorization");
 
-
 //registering
 router.post("/register", validInfo, async (req, res) => {
   try {
@@ -43,10 +42,19 @@ router.post("/register", validInfo, async (req, res) => {
 
     //5. Generating our jwt token
     const token = jwtGenerator(newUser.rows[0].user_id);
-    res.json(token);
+    res.status(200).json({
+      status: "success",
+      message: "User registered successfully",
+      token: token,
+      user: {
+        id: newUser.rows[0].user_id,
+        name: newUser.rows[0].user_name,
+        email: newUser.rows[0].user_email,
+      },
+    });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server error");
+    res.status(500).json("Server error");
   }
 });
 
@@ -82,14 +90,14 @@ router.post("/login", validInfo, async (req, res) => {
     // 4. if password is correct, give them the jwt token
     const token = jwtGenerator(user.rows[0].user_id);
 
-    res.json(token);
+    res.json({ token });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server error");
   }
 });
 
-router.get("/is-verify",authorization, async (req, res) => {
+router.get("/is-verify", authorization, async (req, res) => {
   try {
     res.json(true);
   } catch (error) {

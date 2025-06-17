@@ -6,19 +6,20 @@ function validInfo(req, res, next) {
   }
 
   if (req.path === "/register") {
-    console.log(!email.length);
-    if (![email, name, password].every(Boolean)) {
+    if (!email || !name || !password) {
       return res.status(401).json({ error: "Missing Credentials" });
     } else if (!validEmail(email)) {
       return res.status(401).json({ error: "invalid Email" });
     }
   } else if (req.path === "/login") {
-    if (![email, password].every(Boolean)) {
+    if (!email || !password) {
       return res.status(401).json({ error: "Missing Credentials" });
     } else if (!validEmail(email)) {
       return res.status(401).json({ error: "invalid Email" });
     }
   }
+  console.log("validInfo middleware hit on", req.path);
+  console.log("Received:", { name, email, password });
 
   next();
 }
