@@ -3,8 +3,6 @@ import eyeClosed from "../assets/icons/eye-closed.svg";
 import eyeOpen from "../assets/icons/eye-open.svg";
 
 const Register = ({ setAuth = () => console.log("fallback setAuth used") }) => {
-  console.log("setAuth received:", setAuth);
-  console.log("typeof setAuth:", typeof setAuth);
   const [showPassword, setShowPassword] = useState(false);
   const [inputs, setInputs] = useState({ name: "hi", email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
@@ -166,7 +164,7 @@ const Register = ({ setAuth = () => console.log("fallback setAuth used") }) => {
                   Processing...
                 </span>
               ) : (
-                "Submit"
+                "Register"
               )}
             </button>
           </div>

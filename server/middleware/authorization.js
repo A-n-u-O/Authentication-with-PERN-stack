@@ -3,12 +3,14 @@ require("dotenv").config();
 
 //check if the token being sent is valid
 function authorization(req, res, next) {
-  const token = req.header("Authorization") || req.header("authorization");
-  console.log("Received token",token);
+  // check for token in headers
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+  console.log("Received token", token);
   if (!token) {
-    return res
-      .status(403)
-      .json({ error: " authorization denied-no token provided" });
+    return res.status(403).json({
+      error: "Authorization denied",
+      message: "No authentication token provided",
+    });
   }
 
   try {
@@ -24,7 +26,12 @@ function authorization(req, res, next) {
 
     //validate payload structure
     if (!payload.user || !payload.user.id) {
-      return res.status(401).json({ error: "Invalid token payload" });
+      return res
+        .status(401)
+        .json({
+          error: "Invalid token",
+          message: "Malformed authentication token",
+        });
     }
 
     req.user = payload.user;
@@ -41,7 +48,10 @@ function authorization(req, res, next) {
       errorResponse.details = error.message;
     }
 
-    res.status(401).json(errorResponse);
+    res.status(401).json({ 
+      error: "Authentication failed",
+      message: errorResponse
+    });
   }
 }
 module.exports = authorization;

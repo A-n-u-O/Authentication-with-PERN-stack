@@ -72,7 +72,10 @@ router.post("/login", validInfo, async (req, res) => {
     ]);
 
     if (user.rowCount === 0) {
-      return res.status(401).json("password or email is incorrect!"); //unauthenticated
+      return res.status(401).json({
+        error: "Invalid Credentials",
+        message: "Email or Password is incorrect",
+      }); //unauthenticated
     }
 
     // 3. check if incoming password is the same as database password
@@ -82,7 +85,10 @@ router.post("/login", validInfo, async (req, res) => {
     );
 
     if (!validPassword) {
-      return res.status(401).json("password or email is incorrect");
+      return res.status(401).json({
+        error: "Invalid Credentials",
+        message: "Email or Password is incorrect",
+      });
     }
 
     console.log(validPassword);
@@ -90,7 +96,16 @@ router.post("/login", validInfo, async (req, res) => {
     // 4. if password is correct, give them the jwt token
     const token = jwtGenerator(user.rows[0].user_id);
 
-    res.json({ token });
+    res.json({
+      status: "success",
+      message: "Login successful",
+      token: token,
+      user: {
+        id: user.rows[0].user_id,
+        name: user.rows[0].user_name,
+        email: user.rows[0].user_email,
+      },
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server error");
@@ -99,10 +114,14 @@ router.post("/login", validInfo, async (req, res) => {
 
 router.get("/is-verify", authorization, async (req, res) => {
   try {
-    res.json(true);
+    //Return minimal user info needed by client
+    res.json({ isVerified: true, user: { id: req.user, name: req.user.name } });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server error");
+    console.error("Verification error:", error.message);
+    res.status(500).json({
+      error: "Verification failed",
+      message: "Could not verify authentication status",
+    });
   }
 });
 module.exports = router;
