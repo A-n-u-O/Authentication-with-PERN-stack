@@ -49,83 +49,81 @@ const Login = ({ setAuth }) => {
     }
   };
   return (
-    <>
-      <div
-        id=" authentication login"
-        className=" w-[90%] max-w-2xl m-auto mt-10 bg-slate-400 p-10 rounded-xl shadow-lg">
-        <h1 className=" text-center text-7xl font-bold text-white mb-8">
-          Log in
-        </h1>
+  <>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="w-full max-w-xl bg-white rounded-3xl shadow-xl overflow-hidden">
+        <div className="bg-indigo-700 py-10 px-12">
+          <h1 className="text-center text-5xl font-bold text-white">Welcome Back</h1>
+        </div>
+        
+        <div className="p-10">
+          {error && (
+            <div className="mb-8 p-5 bg-red-50 border-l-4 border-red-500 text-red-700 rounded text-xl">
+              <p className="font-bold text-2xl">Error</p>
+              <p>{error}</p>
+            </div>
+          )}
 
-        {/* Error message  */}
-        {error && (
-          <div className=" mb-6 p-4 bg-red-100 border-1-4 border-red-500 text-red-700">
-            <p className=" font-bold">Error</p>
-            <p>{error}</p>
-          </div>
-        )}
-
-        {/* Success Message  */}
-        {success && (
-          <div className=" mb-6 p-4 bg-green-100 border-1-4 border-green-500 text-green-700">
-            <p className=" font-bold">Success!</p>
-            <p>Log in Successful. Redirecting to dashboard</p>
-          </div>
-        )}
-        <form onSubmit={onSubmitForm}>
-          <div className="mb-9">
-            <label
-              htmlFor="email"
-              className="block text-4xl font-semibold text-white mb-4"
-              placeholder="example@email.com">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className=" w-full p-6 text-3xl rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={email}
-              onChange={(e) => onChange(e)}
-            />
-          </div>
-          <div className=" mb-9 relative">
-            <label
-              htmlFor="password"
-              className="block text-4xl font-semibold text-white mb-4 placeholder:text-black">
-              Password
-            </label>
-
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              id="password"
-              className=" w-full p-6 text-3xl rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={password}
-              onChange={(e) => onChange(e)}
-              required
-            />
-            <img
-              src={showPassword ? eyeOpen : eyeClosed}
-              className=" w-8 h-8 absolute top-[71%] right-6 cursor-pointer transform -translate-y-1/2"
-              alt="toggle password visibility"
-              onClick={() => setShowPassword((showPassword) => !showPassword)}
-            />
-          </div>
-          <div className=" flex justify-center">
+          {success && (
+            <div className="mb-8 p-5 bg-green-50 border-l-4 border-green-500 text-green-700 rounded text-xl">
+              <p className="font-bold text-2xl">Success!</p>
+              <p>Log in Successful. Redirecting to dashboard</p>
+            </div>
+          )}
+          
+          <form onSubmit={onSubmitForm} className="space-y-8">
+            <div>
+              <label htmlFor="email" className="block text-2xl font-medium text-gray-700 mb-3">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                className="w-full px-6 py-5 text-2xl rounded-xl border-2 border-gray-300 focus:ring-4 focus:ring-indigo-300 focus:border-indigo-500 transition-all"
+                placeholder="example@email.com"
+                value={email}
+                onChange={onChange}
+              />
+            </div>
+            
+            <div className="relative">
+              <label htmlFor="password" className="block text-2xl font-medium text-gray-700 mb-3">
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                id="password"
+                className="w-full px-6 py-5 text-2xl rounded-xl border-2 border-gray-300 focus:ring-4 focus:ring-indigo-300 focus:border-indigo-500 transition-all pr-16"
+                value={password}
+                onChange={onChange}
+                required
+              />
+              <button
+                type="button"
+                className="absolute bottom-5 right-5 flex items-center"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <img
+                  src={showPassword ? eyeOpen : eyeClosed}
+                  className="h-8 w-8 text-gray-400 hover:text-indigo-600"
+                  alt="toggle password visibility"
+                />
+              </button>
+            </div>
+            
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full text-white bg-blue-700 hover:bg-blue-800 font-semibold rounded-lg text-3xl px-6 py-4 focus:ring-4 focus:outline-none focus:ring-blue-300 ${
-                isLoading
-                  ? "bg-blue-400 cursor-not-allowed"
-                  : "bg-blue-700 hover:bg-blue-800"
-              }`}>
-              {" "}
+              className={`w-full py-5 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-2xl transition-all duration-200 ${
+                isLoading ? 'opacity-75 cursor-not-allowed' : ''
+              }`}
+            >
               {isLoading ? (
-                <span className=" flex items-center justify-center">
+                <span className="flex items-center justify-center">
                   <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    className="animate-spin -ml-1 mr-3 h-7 w-7 text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24">
@@ -144,19 +142,21 @@ const Login = ({ setAuth }) => {
                   Processing...
                 </span>
               ) : (
-                "Log in"
+                'Log in'
               )}
             </button>
+          </form>
+          
+          <div className="mt-8 text-center text-xl text-gray-600">
+            Don't have an account?{' '}
+            <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-500">
+              Register
+            </Link>
           </div>
-        </form>
-        <div className="back-to-register flex row-auto justify-center gap-3 mt-3 text-2xl">
-          <p>Don't have an account?</p>
-          <Link to={"/register"} className=" text-blue-700">
-            Register
-          </Link>
         </div>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 };
 export default Login;
