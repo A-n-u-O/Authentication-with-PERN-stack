@@ -59,15 +59,10 @@ const Dashboard = ({ setAuth }) => {
   if (error) return <div className=" w-75 text-danger">Error: {error}</div>;
   return (
     <>
-      <div className=" dashboard container mt-5">
-        <h1 className=" display-4">Dashboard</h1>
-        <button className=" btn btn-outline-danger" onClick={handleLogout}>
-          log out
-        </button>
-      </div>
-
-      {user && (
-        <div className=" card">
+      <div id="dashboard" className=" container w-auto h-auto m-auto bg-slate-300">
+        <h1 className=" display-4 text-5xl">Dashboard</h1>
+        {user && (
+        <div className=" card text-2xl bg-cyan-700 p-20 rounded-xl shadow-lg w-[50%]">
           <div className=" card-body">
             <h5 className=" card-title">User</h5>
             <p className=" card-text">
@@ -80,6 +75,12 @@ const Dashboard = ({ setAuth }) => {
           </div>
         </div>
       )}
+        <button className=" mt-5 text-white bg-red-500 hover:bg-blue-600 font-semibold rounded-lg text-3xl px-6 py-4 focus:ring-4 focus:outline-none focus:ring-red-300 " onClick={handleLogout}>
+          log out
+        </button>
+      </div>
+
+      
     </>
   );
 };
