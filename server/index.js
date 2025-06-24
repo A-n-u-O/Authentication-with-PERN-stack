@@ -7,12 +7,15 @@ app.use(cors());
 app.use(express.json()); //for parsing incoming json in req.body
 
 //ROUTES//
+
+
+//Auth related routes
 //register and login routes
 app.use("/auth", require("./routes/jwtAuth"));
-
 //dashboard route
-app.use("/dashboard", require("./routes/dashboard"));
+app.use("/auth/dashboard", require("./routes/dashboard"));
 
+//Other routes
 //route to manage content on your blog
 app.use("/content", require("./routes/contentActions"));
 

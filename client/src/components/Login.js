@@ -149,12 +149,12 @@ const Login = ({ setAuth }) => {
             </button>
           </div>
         </form>
-        <p className="back-to-register flex row-auto justify-center gap-3 mt-3 text-2xl">
+        <div className="back-to-register flex row-auto justify-center gap-3 mt-3 text-2xl">
           <p>Don't have an account?</p>
           <Link to={"/register"} className=" text-blue-700">
             Register
           </Link>
-        </p>
+        </div>
       </div>
     </>
   );

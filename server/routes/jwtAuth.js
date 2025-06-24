@@ -65,13 +65,16 @@ router.post("/login", validInfo, async (req, res) => {
 
     // 1. destructure the request.body(req)
     const { email, password } = req.body;
+    console.log("Login Attempt for:", email);
 
     // 2. check if user does exist(if not, throw error)
-    const user = await pool.query("SELECT * FROM users WHERE user_email = $1", [
-      email,
-    ]);
+    const user = await pool.query(
+      "SELECT * FROM users WHERE LOWER(user_email) = LOWER($1)",
+      [email]
+    );
 
     if (user.rowCount === 0) {
+      console.log("user not found for email:", email);
       return res.status(401).json({
         error: "Invalid Credentials",
         message: "Email or Password is incorrect",
@@ -85,6 +88,7 @@ router.post("/login", validInfo, async (req, res) => {
     );
 
     if (!validPassword) {
+      console.log("Invalid password for email:", email);
       return res.status(401).json({
         error: "Invalid Credentials",
         message: "Email or Password is incorrect",
@@ -95,7 +99,7 @@ router.post("/login", validInfo, async (req, res) => {
 
     // 4. if password is correct, give them the jwt token
     const token = jwtGenerator(user.rows[0].user_id);
-
+    console.log("Generated token for user:", user.rows[0].user_id);
     res.json({
       status: "success",
       message: "Login successful",

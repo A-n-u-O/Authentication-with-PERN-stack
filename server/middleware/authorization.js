@@ -3,7 +3,7 @@ require("dotenv").config();
 
 //check if the token being sent is valid
 function authorization(req, res, next) {
-  // check for token in headers
+  //get token from header
   const token = req.header("Authorization")?.replace("Bearer ", "");
   console.log("Received token", token);
   if (!token) {
@@ -12,26 +12,16 @@ function authorization(req, res, next) {
       message: "No authentication token provided",
     });
   }
-
   try {
-    const actualToken = token.include("Bearer ")
-      ? token.split("Bearer ")[1]
-      : token;
-
-    if (!actualToken || actualToken.length < 10) {
-      return res.status(401).json({ error: "Malformed token" });
-    }
-
-    const payload = jwt.verify(actualToken, process.env.jwtSecret);
-
+    //verify token
+    const payload = jwt.verify(token, process.env.jwtSecret);
+    console.log("Decoded payload:", payload);
     //validate payload structure
     if (!payload.user || !payload.user.id) {
-      return res
-        .status(401)
-        .json({
-          error: "Invalid token",
-          message: "Malformed authentication token",
-        });
+      return res.status(401).json({
+        error: "Invalid token",
+        message: "Malformed authentication token",
+      });
     }
 
     req.user = payload.user;
@@ -48,9 +38,9 @@ function authorization(req, res, next) {
       errorResponse.details = error.message;
     }
 
-    res.status(401).json({ 
+    res.status(401).json({
       error: "Authentication failed",
-      message: errorResponse
+      message: errorResponse,
     });
   }
 }
