@@ -1,6 +1,8 @@
 # 🔐 Auth App with React + Node.js + PostgreSQL
 
-![App Screenshot](./client/public/dashboard-screenshot.png)(./client/public/login-screenshot.png)(./client/public/register-screenshot.png)
+![Dashboard Screenshot](./client/public/dashboard-screenshot.png)
+![Login Screenshot](./client/public/login-screenshot.png)
+![Register Screenshot](./client/public/register-screenshot.png)
 
 A full-stack authentication system with login, registration, and protected dashboard.
 
